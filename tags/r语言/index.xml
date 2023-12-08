@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>R语言 on 沈维燕 | BioIT 爱好者</title>
+    <link>https://blog.weiyan.cc/tags/r%E8%AF%AD%E8%A8%80/</link>
+    <description>Recent content in R语言 on 沈维燕 | BioIT 爱好者</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 14 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.weiyan.cc/tags/r%E8%AF%AD%E8%A8%80/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>折腾了一天，终于把这个 R 包装上了</title>
+      <link>https://blog.weiyan.cc/tech/r-sf/</link>
+      <pubDate>Wed, 14 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.weiyan.cc/tech/r-sf/</guid>
+      <description>📢 本文章同步自作者的语雀知识库，请点击这里阅读原文。 事情起因于在推特看到关于ggVennDiagram这个 R 包教程的一条推文，想着去复现一下</description>
+    </item>
+    
+    <item>
+      <title>Linux 下 R 源码安装指南</title>
+      <link>https://blog.weiyan.cc/tech/install-latest-r-from-source/</link>
+      <pubDate>Mon, 01 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.weiyan.cc/tech/install-latest-r-from-source/</guid>
+      <description>📢 本文章同步自作者的语雀知识库，请点击这里阅读原文。 如果你使用的 Linux 系统 GCC 版本太低, 又没有 root 权限 (即使有 root 权限又担心升级 GCC 带来的风险) ; 同时你</description>
+    </item>
+    
+  </channel>
+</rss>

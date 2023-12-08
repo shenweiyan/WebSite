@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+     
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css"> 
+    <link rel="stylesheet" href="../../fonts/academicons-1.8.6/css/academicons.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../img/logo.png"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
+    
+    
+    
+    
+    
+    
+    <title>Linux 磁盘管理之 LVM 原理与操作 - 沈维燕 | BioIT 爱好者</title> 
+    <meta property="og:title" content="Linux 磁盘管理之 LVM 原理与操作 - 沈维燕 | BioIT 爱好者">
+    
+
+    
+      
+    
+
+    
+
+    
+  
+    <link rel="stylesheet" href="https://blog.weiyan.cc/css/style.css"/>
+    <link rel="stylesheet" href="https://blog.weiyan.cc/css/fonts.css"/>
+    
+
+<link rel="stylesheet" href="https://blog.weiyan.cc/css/template-styles.css" />
+<link rel="stylesheet" href="https://blog.weiyan.cc/css/custom.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.3.1/build/styles/github.min.css">
+
+
+  </head>
+
+  
+  <body class="tech">
+    
+    
+    <header class="intro-and-nav" role="banner">
+    <div>
+      <div class="intro">
+        <a class="logo" href="../../" aria-label="沈维燕 | BioIT 爱好者 home page">
+          <img src="https://blog.weiyan.cc/img/logo.png" alt="">
+        </a>
+        <p class="library-desc">
+          
+            Bio &amp; IT 爱好者
+          
+        </p>
+      </div>
+      <nav id="patterns-nav" class="patterns" role="navigation">
+        <h2 class="vh">Main navigation</h2>
+        <button id="menu-button" aria-expanded="false">
+          
+          目录
+        </button>
+        
+        <ul id="patterns-list">
+          
+          <li class="pattern">
+          
+          
+	  
+          
+          
+            <a href="../../" >
+              
+              首页
+            </a>
+          </li>
+          
+          <li class="pattern">
+          
+          
+	  
+          
+          
+            <a href="../../about/" >
+              
+              关于
+            </a>
+          </li>
+          
+          <li class="pattern">
+          
+          
+	  
+          
+          
+            <a href="../../tech/" >
+              
+              技术
+            </a>
+          </li>
+          
+          <li class="pattern">
+          
+          
+	  
+          
+          
+            <a href="../../note/" >
+              
+              随笔
+            </a>
+          </li>
+          
+          <li class="pattern">
+          
+          
+	  
+          
+          
+            <a href="../../portfolio/" >
+              
+              作品
+            </a>
+          </li>
+          
+          <li class="pattern">
+          
+          
+	  
+          
+          
+            <a href="../../archive/" >
+              
+              归档
+            </a>
+          </li>
+          
+          <li class="pattern">
+          
+          
+	  
+          
+          
+            <a href="../../feedback/" >
+              
+              留言
+            </a>
+          </li>
+          
+          <li class="pattern">
+          
+          
+	  
+          
+          
+            <a href="../../tags/" >
+              
+              标签
+            </a>
+          </li>
+          
+          <li class="pattern">
+          
+          
+	  
+          
+          
+            <a href="https://www.yuque.com/shenweiyan" >
+              
+              语雀
+            </a>
+          </li>
+          
+          
+
+<li class="pattern">&nbsp;&nbsp;</li>
+
+
+
+<li class="pattern"><a href="https://github.com/shenweiyan/WebSiteSRC/edit/main/content/tech/2019-07-19-linux-lvm.md" target="_blank">编辑</a></li>
+
+
+<li class="pattern"><a href="../../tech/index.xml" type="application/rss+xml" title="RSS feed">订阅</a></li>
+
+<li class="pattern"><a href="../../license/" title="License">版权</a></li>
+
+
+        </ul>
+      </nav>
+    </div>
+    </header>
+
+    <article class="main">
+      <header class="title">
+        
+
+<h1>Linux 磁盘管理之 LVM 原理与操作</h1>
+
+
+
+<h4>沈维燕 &middot 
+2019-07-19</h4> 
+
+
+   
+  
+
+
+      </header>
+
+
+  
+
+  <blockquote>
+<p>📢 本文章同步自作者的<a href="https://www.yuque.com/shenweiyan/">语雀知识库</a>，请点击<a href="https://www.yuque.com/shenweiyan/cookbook/linux-lvm">这里</a>阅读原文。</p>
+</blockquote>
+<p>LVM （ <strong>L</strong>ogical <strong>V</strong> olume <strong>M</strong>anager, 逻辑卷管理器） 是 Linux 环境下对硬盘分区进行管理的一种机制，开创这项技术的初衷是为了解决传统硬盘分区创建后不易更改其大小的弱点。对于传统硬盘分区进行强制扩容和缩小技术理论上虽然是可行的，但却有可能造成数据的丢失，LVM 逻辑卷管理器技术能够将多块硬盘进行卷组合并，让用户不必关心设备底层的架构和布局，拿来即用。</p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://cdn.nlark.com/yuque/0/2019/jpeg/126032/1563516463579-cb8b7ed2-60f8-4f07-b91d-583ab1cf0bfe.jpeg#averageHue=%23afa658&amp;height=360&amp;id=rJKvs&amp;originHeight=360&amp;originWidth=640&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=0&amp;status=done&amp;style=none&amp;title=&amp;width=640">
+<img src="https://cdn.nlark.com/yuque/0/2019/jpeg/126032/1563516463579-cb8b7ed2-60f8-4f07-b91d-583ab1cf0bfe.jpeg#averageHue=%23afa658&amp;height=360&amp;id=rJKvs&amp;originHeight=360&amp;originWidth=640&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=0&amp;status=done&amp;style=none&amp;title=&amp;width=640" alt=""  />
+</a>
+</div>
+
+</p>
+<p>LVM 逻辑卷管理器是在磁盘分区和文件系统之间添加的逻辑层，它提供了一个抽象的卷组，可以使得多块硬盘进行卷组合并，让用户不必关心物理硬盘设备的底层结构，从而实现对分区的灵活动态调整。</p>
+<blockquote>
+<p>LVM 逻辑卷管理器的技术结构如图 2 所示，刘遄老师来举个吃货的例子帮助同学们理解吧，比如家里想吃馒头但面粉不够了，妈妈分别从隔壁老王家、老李家、老张家借来一些面粉，蒸出馒头后大家一起来吃，首先咱们需要将这些面粉（<strong>物理卷 PV</strong>，Physical Volume）合并成一个大面团（<strong>卷组 VG</strong>，Volume Group），然后把这一大团面再分割成一个个小馒头（<strong>逻辑卷 LV</strong>，Logical Volume），每个小馒头的重量必须是每勺面粉（<strong>基本单元 PE</strong>，Physical Extent）的倍数。物理卷是处于逻辑卷管理器中最底层的资源，可以理解成是物理硬盘、硬盘分区或者RAID 磁盘阵列组都可以，而卷组是建立在物理卷之上的，一个卷组中可以包含多个物理卷，当然在卷组创建之后也可以继续向其中添加新的物理卷，而逻辑卷是建立于卷组之上的，将卷组中空闲的资源建立出新的逻辑卷，并且逻辑卷建立后可以动态的扩展或缩小空间，这也就是 LVM 逻辑卷管理器的核心理念。（<a href="http://www.linuxprobe.com/chapter-07.html">第7章 使用RAID与LVM磁盘阵列技术</a>）</p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://cdn.nlark.com/yuque/0/2019/png/126032/1563516463553-518b3ab0-cb47-4ae3-9b9f-fe2ac6b56a7f.png#averageHue=%23f6f2f0&amp;height=155&amp;id=tryOk&amp;originHeight=155&amp;originWidth=544&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=0&amp;status=done&amp;style=none&amp;title=&amp;width=544">
+<img src="https://cdn.nlark.com/yuque/0/2019/png/126032/1563516463553-518b3ab0-cb47-4ae3-9b9f-fe2ac6b56a7f.png#averageHue=%23f6f2f0&amp;height=155&amp;id=tryOk&amp;originHeight=155&amp;originWidth=544&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=0&amp;status=done&amp;style=none&amp;title=&amp;width=544" alt=""  />
+</a>
+</div>
+
+</p>
+</blockquote>
+<h5 id="heading"></h5>
+<h2 id="常用命令">常用命令</h2>
+<p>部署 LVM 逻辑卷管理器需要依次对对物理卷、卷组和逻辑卷的逐个配置，常见的命令分别包括有：</p>
+<table>
+<thead>
+<tr>
+<th>功能/命令</th>
+<th>物理卷管理</th>
+<th>卷组管理</th>
+<th>逻辑卷管理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>扫描</td>
+<td>pvscan</td>
+<td>vgscan</td>
+<td>lvscan</td>
+</tr>
+<tr>
+<td>建立</td>
+<td>pvcreate</td>
+<td>vgcreate</td>
+<td>lvcreate</td>
+</tr>
+<tr>
+<td>显示</td>
+<td>pvdisplay</td>
+<td>vgdisplay</td>
+<td>lvdisplay</td>
+</tr>
+<tr>
+<td>删除</td>
+<td>pvremove</td>
+<td>vgremove</td>
+<td>lvremove</td>
+</tr>
+<tr>
+<td>缩小</td>
+<td></td>
+<td>vgreduce</td>
+<td>lvreduce</td>
+</tr>
+<tr>
+<td>缩小</td>
+<td></td>
+<td>vgreduce</td>
+<td>lvreduce</td>
+</tr>
+</tbody>
+</table>
+<h2 id="实战展示">实战展示</h2>
+<p>阿里云 ECS 扩充 4T 磁盘，并挂载。</p>
+<h3 id="物理硬盘">物理硬盘</h3>
+<p><strong>新增两个物理硬盘 vdb（2199.0 GB），vdc（2199.0 GB）。 为接下来 做LVM 做准备。</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@iZ88qg9l425Z ~<span style="color:#f92672">]</span><span style="color:#75715e"># fdisk -l</span>
+
+Disk /dev/vda: 42.9 GB, <span style="color:#ae81ff">42949672960</span> bytes
+<span style="color:#ae81ff">255</span> heads, <span style="color:#ae81ff">63</span> sectors/track, <span style="color:#ae81ff">5221</span> cylinders
+Units <span style="color:#f92672">=</span> cylinders of <span style="color:#ae81ff">16065</span> * 512 <span style="color:#f92672">=</span> <span style="color:#ae81ff">8225280</span> bytes
+Sector size <span style="color:#f92672">(</span>logical/physical<span style="color:#f92672">)</span>: <span style="color:#ae81ff">512</span> bytes / <span style="color:#ae81ff">512</span> bytes
+I/O size <span style="color:#f92672">(</span>minimum/optimal<span style="color:#f92672">)</span>: <span style="color:#ae81ff">512</span> bytes / <span style="color:#ae81ff">512</span> bytes
+Disk identifier: 0x00078f9c
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/vda1   *           <span style="color:#ae81ff">1</span>        <span style="color:#ae81ff">5222</span>    <span style="color:#ae81ff">41940992</span>   <span style="color:#ae81ff">83</span>  Linux
+
+Disk /dev/vdb: 2199.0 GB, <span style="color:#ae81ff">2199023255552</span> bytes
+<span style="color:#ae81ff">16</span> heads, <span style="color:#ae81ff">63</span> sectors/track, <span style="color:#ae81ff">4260880</span> cylinders
+Units <span style="color:#f92672">=</span> cylinders of <span style="color:#ae81ff">1008</span> * 512 <span style="color:#f92672">=</span> <span style="color:#ae81ff">516096</span> bytes
+Sector size <span style="color:#f92672">(</span>logical/physical<span style="color:#f92672">)</span>: <span style="color:#ae81ff">512</span> bytes / <span style="color:#ae81ff">512</span> bytes
+I/O size <span style="color:#f92672">(</span>minimum/optimal<span style="color:#f92672">)</span>: <span style="color:#ae81ff">512</span> bytes / <span style="color:#ae81ff">512</span> bytes
+Disk identifier: 0x00000000
+
+
+Disk /dev/vdc: 2199.0 GB, <span style="color:#ae81ff">2199023255552</span> bytes
+<span style="color:#ae81ff">16</span> heads, <span style="color:#ae81ff">63</span> sectors/track, <span style="color:#ae81ff">4260880</span> cylinders
+Units <span style="color:#f92672">=</span> cylinders of <span style="color:#ae81ff">1008</span> * 512 <span style="color:#f92672">=</span> <span style="color:#ae81ff">516096</span> bytes
+Sector size <span style="color:#f92672">(</span>logical/physical<span style="color:#f92672">)</span>: <span style="color:#ae81ff">512</span> bytes / <span style="color:#ae81ff">512</span> bytes
+I/O size <span style="color:#f92672">(</span>minimum/optimal<span style="color:#f92672">)</span>: <span style="color:#ae81ff">512</span> bytes / <span style="color:#ae81ff">512</span> bytes
+Disk identifier: 0x00000000
+</code></pre></div><h3 id="硬盘分区">硬盘分区</h3>
+<p>对添加的物理硬盘进行分区，这里先对 /dev/vdc 进行处理，完成后对 /dev/vdb 进行同样的处理。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@iZ88qg9l425Z ~<span style="color:#f92672">]</span><span style="color:#75715e"># fdisk /dev/vdc</span>
+Device contains neither a valid DOS partition table, nor Sun, SGI or OSF disklabel
+Building a new DOS disklabel with disk identifier 0x4613ad5e.
+Changes will remain in memory only, <span style="color:#66d9ef">until</span> you decide to write them.
+After that, of course, the previous content won<span style="color:#e6db74">&#39;t be recoverable.
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">Warning: invalid flag 0x0000 of partition table 4 will be corrected by w(rite)
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">WARNING: The size of this disk is 2.2 TB (2199023255552 bytes).
+</span><span style="color:#e6db74">DOS partition table format can not be used on drives for volumes
+</span><span style="color:#e6db74">larger than (2199023255040 bytes) for 512-byte sectors. Use parted(1) and GUID 
+</span><span style="color:#e6db74">partition table format (GPT).
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">WARNING: DOS-compatible mode is deprecated. It&#39;</span>s strongly recommended to
+         switch off the mode <span style="color:#f92672">(</span>command <span style="color:#e6db74">&#39;c&#39;</span><span style="color:#f92672">)</span> and change display units to
+         sectors <span style="color:#f92672">(</span>command <span style="color:#e6db74">&#39;u&#39;</span><span style="color:#f92672">)</span>.
+
+Command <span style="color:#f92672">(</span>m <span style="color:#66d9ef">for</span> help<span style="color:#f92672">)</span>: p
+
+Disk /dev/vdc: 2199.0 GB, <span style="color:#ae81ff">2199023255552</span> bytes
+<span style="color:#ae81ff">16</span> heads, <span style="color:#ae81ff">63</span> sectors/track, <span style="color:#ae81ff">4260880</span> cylinders
+Units <span style="color:#f92672">=</span> cylinders of <span style="color:#ae81ff">1008</span> * 512 <span style="color:#f92672">=</span> <span style="color:#ae81ff">516096</span> bytes
+Sector size <span style="color:#f92672">(</span>logical/physical<span style="color:#f92672">)</span>: <span style="color:#ae81ff">512</span> bytes / <span style="color:#ae81ff">512</span> bytes
+I/O size <span style="color:#f92672">(</span>minimum/optimal<span style="color:#f92672">)</span>: <span style="color:#ae81ff">512</span> bytes / <span style="color:#ae81ff">512</span> bytes
+Disk identifier: 0x4613ad5e
+
+   Device Boot      Start         End      Blocks   Id  System
+
+Command <span style="color:#f92672">(</span>m <span style="color:#66d9ef">for</span> help<span style="color:#f92672">)</span>: n     <span style="color:#75715e"># 创建新分区</span>
+Command action
+   e   extended      <span style="color:#75715e"># e 为逻辑分区</span>
+   p   primary partition <span style="color:#f92672">(</span>1-4<span style="color:#f92672">)</span>      <span style="color:#75715e"># p 为主分区</span>
+Select <span style="color:#f92672">(</span>default p<span style="color:#f92672">)</span>: p
+Partition number <span style="color:#f92672">(</span>1-4<span style="color:#f92672">)</span>: <span style="color:#ae81ff">1</span>    <span style="color:#75715e"># 由于是新盘我们输入1来分第一个主分区，共可以分4个主分区</span>
+First sector <span style="color:#f92672">(</span>1-4260880, default 1<span style="color:#f92672">)</span>:  <span style="color:#75715e"># 选择该分区的起始磁盘数，如无特殊需求强烈建议选择默认，也就是1来分区（可直接按回车）</span>
+Using default value <span style="color:#ae81ff">1</span>
+Last cylinder, +cylinders or +size<span style="color:#f92672">{</span>K,M,G<span style="color:#f92672">}</span> <span style="color:#f92672">(</span>1-4260880, default 4260880<span style="color:#f92672">)</span>:  <span style="color:#75715e"># 定义该分区的大小，如果按默认（按回车）即是使用全部可用存储额，如分一个 1G 的空间，输入 +1024m</span>
+Using default value <span style="color:#ae81ff">4260880</span>
+
+Command <span style="color:#f92672">(</span>m <span style="color:#66d9ef">for</span> help<span style="color:#f92672">)</span>: t   <span style="color:#75715e"># 改变分区标识符</span>
+Selected partition <span style="color:#ae81ff">1</span>
+Hex code <span style="color:#f92672">(</span>type L to list codes<span style="color:#f92672">)</span>: 8e       
+Changed system type of partition <span style="color:#ae81ff">1</span> to 8e <span style="color:#f92672">(</span>Linux LVM<span style="color:#f92672">)</span>
+
+Command <span style="color:#f92672">(</span>m <span style="color:#66d9ef">for</span> help<span style="color:#f92672">)</span>: p
+
+Disk /dev/vdc: 2199.0 GB, <span style="color:#ae81ff">2199023255552</span> bytes
+<span style="color:#ae81ff">16</span> heads, <span style="color:#ae81ff">63</span> sectors/track, <span style="color:#ae81ff">4260880</span> cylinders
+Units <span style="color:#f92672">=</span> cylinders of <span style="color:#ae81ff">1008</span> * 512 <span style="color:#f92672">=</span> <span style="color:#ae81ff">516096</span> bytes
+Sector size <span style="color:#f92672">(</span>logical/physical<span style="color:#f92672">)</span>: <span style="color:#ae81ff">512</span> bytes / <span style="color:#ae81ff">512</span> bytes
+I/O size <span style="color:#f92672">(</span>minimum/optimal<span style="color:#f92672">)</span>: <span style="color:#ae81ff">512</span> bytes / <span style="color:#ae81ff">512</span> bytes
+Disk identifier: 0x4613ad5e
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/vdc1               <span style="color:#ae81ff">1</span>     <span style="color:#ae81ff">4260880</span>  2147483488+  8e  Linux LVM
+
+Command <span style="color:#f92672">(</span>m <span style="color:#66d9ef">for</span> help<span style="color:#f92672">)</span>: w    <span style="color:#75715e"># 写入分区</span>
+The partition table has been altered!
+
+Calling ioctl<span style="color:#f92672">()</span> to re-read partition table.
+Syncing disks.
+<span style="color:#f92672">[</span>root@iZ88qg9l425Z ~<span style="color:#f92672">]</span><span style="color:#75715e">#</span>
+</code></pre></div><h3 id="创建-pv">创建 PV</h3>
+<p>在新建的分区上创建 PV 物理卷，这里先对 /dev/vdc 进行处理，完成后需要对 /dev/vdb 进行同样的处理。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@iZ88qg9l425Z ~<span style="color:#f92672">]</span><span style="color:#75715e"># pvcreate /dev/vdc1</span>
+  Physical volume <span style="color:#e6db74">&#34;/dev/vdc1&#34;</span> successfully created
+<span style="color:#f92672">[</span>root@iZ88qg9l425Z ~<span style="color:#f92672">]</span><span style="color:#75715e"># pvs</span>
+  PV         VG   Fmt  Attr PSize PFree
+  /dev/vdc1       lvm2 a--  2.00t 2.00t
+<span style="color:#f92672">[</span>root@iZ88qg9l425Z ~<span style="color:#f92672">]</span><span style="color:#75715e"># pvdisplay </span>
+  <span style="color:#e6db74">&#34;/dev/vdc1&#34;</span> is a new physical volume of <span style="color:#e6db74">&#34;2.00 TiB&#34;</span>
+  --- NEW Physical volume ---
+  PV Name               /dev/vdc1
+  VG Name               
+  PV Size               2.00 TiB
+  Allocatable           NO
+  PE Size               <span style="color:#ae81ff">0</span>   
+  Total PE              <span style="color:#ae81ff">0</span>
+  Free PE               <span style="color:#ae81ff">0</span>
+  Allocated PE          <span style="color:#ae81ff">0</span>
+  PV UUID               83IQY3-Z7O0-kicK-xIbJ-ZmUW-AlOF-ENUAp6
+   
+<span style="color:#f92672">[</span>root@iZ88qg9l425Z ~<span style="color:#f92672">]</span><span style="color:#75715e"># fdisk -l</span>
+
+Disk /dev/vda: 42.9 GB, <span style="color:#ae81ff">42949672960</span> bytes
+<span style="color:#ae81ff">255</span> heads, <span style="color:#ae81ff">63</span> sectors/track, <span style="color:#ae81ff">5221</span> cylinders
+Units <span style="color:#f92672">=</span> cylinders of <span style="color:#ae81ff">16065</span> * 512 <span style="color:#f92672">=</span> <span style="color:#ae81ff">8225280</span> bytes
+Sector size <span style="color:#f92672">(</span>logical/physical<span style="color:#f92672">)</span>: <span style="color:#ae81ff">512</span> bytes / <span style="color:#ae81ff">512</span> bytes
+I/O size <span style="color:#f92672">(</span>minimum/optimal<span style="color:#f92672">)</span>: <span style="color:#ae81ff">512</span> bytes / <span style="color:#ae81ff">512</span> bytes
+Disk identifier: 0x00078f9c
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/vda1   *           <span style="color:#ae81ff">1</span>        <span style="color:#ae81ff">5222</span>    <span style="color:#ae81ff">41940992</span>   <span style="color:#ae81ff">83</span>  Linux
+
+Disk /dev/vdb: 2199.0 GB, <span style="color:#ae81ff">2199023255552</span> bytes
+<span style="color:#ae81ff">16</span> heads, <span style="color:#ae81ff">63</span> sectors/track, <span style="color:#ae81ff">4260880</span> cylinders
+Units <span style="color:#f92672">=</span> cylinders of <span style="color:#ae81ff">1008</span> * 512 <span style="color:#f92672">=</span> <span style="color:#ae81ff">516096</span> bytes
+Sector size <span style="color:#f92672">(</span>logical/physical<span style="color:#f92672">)</span>: <span style="color:#ae81ff">512</span> bytes / <span style="color:#ae81ff">512</span> bytes
+I/O size <span style="color:#f92672">(</span>minimum/optimal<span style="color:#f92672">)</span>: <span style="color:#ae81ff">512</span> bytes / <span style="color:#ae81ff">512</span> bytes
+Disk identifier: 0x00000000
+
+
+Disk /dev/vdc: 2199.0 GB, <span style="color:#ae81ff">2199023255552</span> bytes
+<span style="color:#ae81ff">16</span> heads, <span style="color:#ae81ff">63</span> sectors/track, <span style="color:#ae81ff">4260880</span> cylinders
+Units <span style="color:#f92672">=</span> cylinders of <span style="color:#ae81ff">1008</span> * 512 <span style="color:#f92672">=</span> <span style="color:#ae81ff">516096</span> bytes
+Sector size <span style="color:#f92672">(</span>logical/physical<span style="color:#f92672">)</span>: <span style="color:#ae81ff">512</span> bytes / <span style="color:#ae81ff">512</span> bytes
+I/O size <span style="color:#f92672">(</span>minimum/optimal<span style="color:#f92672">)</span>: <span style="color:#ae81ff">512</span> bytes / <span style="color:#ae81ff">512</span> bytes
+Disk identifier: 0x4613ad5e
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/vdc1               <span style="color:#ae81ff">1</span>     <span style="color:#ae81ff">4260880</span>  2147483488+  8e  Linux LVM
+</code></pre></div><p><strong>对 /dev/vdc、/dev/vdb 进行同样的操作（硬盘分区、创建 PV）后查看已有的物理卷。</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@iZ88qg9l425Z ~<span style="color:#f92672">]</span><span style="color:#75715e"># pvdisplay </span>
+  <span style="color:#e6db74">&#34;/dev/vdb1&#34;</span> is a new physical volume of <span style="color:#e6db74">&#34;2.00 TiB&#34;</span>
+  --- NEW Physical volume ---
+  PV Name               /dev/vdb1
+  VG Name               
+  PV Size               2.00 TiB
+  Allocatable           NO
+  PE Size               <span style="color:#ae81ff">0</span>   
+  Total PE              <span style="color:#ae81ff">0</span>
+  Free PE               <span style="color:#ae81ff">0</span>
+  Allocated PE          <span style="color:#ae81ff">0</span>
+  PV UUID               YMNnk1-sdi5-zyhj-coI5-hwBJ-Kofw-2BLE58
+   
+  <span style="color:#e6db74">&#34;/dev/vdc1&#34;</span> is a new physical volume of <span style="color:#e6db74">&#34;2.00 TiB&#34;</span>
+  --- NEW Physical volume ---
+  PV Name               /dev/vdc1
+  VG Name               
+  PV Size               2.00 TiB
+  Allocatable           NO
+  PE Size               <span style="color:#ae81ff">0</span>   
+  Total PE              <span style="color:#ae81ff">0</span>
+  Free PE               <span style="color:#ae81ff">0</span>
+  Allocated PE          <span style="color:#ae81ff">0</span>
+  PV UUID               83IQY3-Z7O0-kicK-xIbJ-ZmUW-AlOF-ENUAp6
+</code></pre></div><h3 id="把-pv-加入到-vg">把 PV 加入到 VG</h3>
+<p>将所有的新建的 PV 加入名为 vgdate 的卷组 (Volume Group) 中。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@iZ88qg9l425Z ~<span style="color:#f92672">]</span><span style="color:#75715e"># vgcreate vgdata /dev/vdb1 /dev/vdc1</span>
+  Volume group <span style="color:#e6db74">&#34;vgdata&#34;</span> successfully created
+<span style="color:#f92672">[</span>root@iZ88qg9l425Z ~<span style="color:#f92672">]</span><span style="color:#75715e"># vgs</span>
+  VG     <span style="color:#75715e">#PV #LV #SN Attr   VSize VFree</span>
+  vgdata   <span style="color:#ae81ff">2</span>   <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">0</span> wz--n- 4.00t 4.00t
+<span style="color:#f92672">[</span>root@iZ88qg9l425Z ~<span style="color:#f92672">]</span><span style="color:#75715e"># vgdisplay </span>
+  --- Volume group ---
+  VG Name               vgdata
+  System ID             
+  Format                lvm2
+  Metadata Areas        <span style="color:#ae81ff">2</span>
+  Metadata Sequence No  <span style="color:#ae81ff">1</span>
+  VG Access             read/write
+  VG Status             resizable
+  MAX LV                <span style="color:#ae81ff">0</span>
+  Cur LV                <span style="color:#ae81ff">0</span>
+  Open LV               <span style="color:#ae81ff">0</span>
+  Max PV                <span style="color:#ae81ff">0</span>
+  Cur PV                <span style="color:#ae81ff">2</span>
+  Act PV                <span style="color:#ae81ff">2</span>
+  VG Size               4.00 TiB
+  PE Size               4.00 MiB
+  Total PE              <span style="color:#ae81ff">1048574</span>
+  Alloc PE / Size       <span style="color:#ae81ff">0</span> / <span style="color:#ae81ff">0</span>   
+  Free  PE / Size       <span style="color:#ae81ff">1048574</span> / 4.00 TiB
+  VG UUID               QafGYd-s0HW-6Wrx-pr6v-1fnR-mvpB-zrZ0md
+
+</code></pre></div><h3 id="创建-lv-逻辑卷">创建 LV 逻辑卷</h3>
+<p>创建名为 lvdata 的 LV 逻辑卷。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@iZ88qg9l425Z ~<span style="color:#f92672">]</span><span style="color:#75715e"># lvcreate -l 1048574 -n lvdata vgdata</span>
+  Logical volume <span style="color:#e6db74">&#34;lvdata&#34;</span> created
+</code></pre></div><h3 id="格式化并挂载">格式化并挂载</h3>
+<p>对 LV 逻辑卷进行格式化，然后挂载。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@iZ88qg9l425Z ~<span style="color:#f92672">]</span><span style="color:#75715e"># mkfs.ext4 -c /dev/vgdata/lvdata   # 对分区使用 ext4 格式化，-c 参数要先检测磁盘坏道</span>
+mke2fs 1.41.12 <span style="color:#f92672">(</span>17-May-2010<span style="color:#f92672">)</span>
+Filesystem label<span style="color:#f92672">=</span>
+OS type: Linux
+Block size<span style="color:#f92672">=</span><span style="color:#ae81ff">4096</span> <span style="color:#f92672">(</span>log<span style="color:#f92672">=</span>2<span style="color:#f92672">)</span>
+Fragment size<span style="color:#f92672">=</span><span style="color:#ae81ff">4096</span> <span style="color:#f92672">(</span>log<span style="color:#f92672">=</span>2<span style="color:#f92672">)</span>
+Stride<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span> blocks, Stripe width<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span> blocks
+<span style="color:#ae81ff">268435456</span> inodes, <span style="color:#ae81ff">1073739776</span> blocks
+<span style="color:#ae81ff">53686988</span> blocks <span style="color:#f92672">(</span>5.00%<span style="color:#f92672">)</span> reserved <span style="color:#66d9ef">for</span> the super user
+First data block<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+Maximum filesystem blocks<span style="color:#f92672">=</span><span style="color:#ae81ff">4294967296</span>
+<span style="color:#ae81ff">32768</span> block groups
+<span style="color:#ae81ff">32768</span> blocks per group, <span style="color:#ae81ff">32768</span> fragments per group
+<span style="color:#ae81ff">8192</span> inodes per group
+Superblock backups stored on blocks: 
+    32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, 
+    4096000, 7962624, 11239424, 20480000, 23887872, 71663616, 78675968, 
+    102400000, 214990848, 512000000, 550731776, <span style="color:#ae81ff">644972544</span>
+
+Writing inode tables: <span style="color:#66d9ef">done</span>                            
+Creating journal <span style="color:#f92672">(</span><span style="color:#ae81ff">32768</span> blocks<span style="color:#f92672">)</span>: <span style="color:#66d9ef">done</span>
+Writing superblocks and filesystem accounting information: <span style="color:#66d9ef">done</span>
+
+This filesystem will be automatically checked every <span style="color:#ae81ff">32</span> mounts or
+<span style="color:#ae81ff">180</span> days, whichever comes first.  Use tune2fs -c or -i to override.
+<span style="color:#f92672">[</span>root@iZ88qg9l425Z ~<span style="color:#f92672">]</span><span style="color:#75715e"># mkdir /disk1</span>
+<span style="color:#f92672">[</span>root@iZ88qg9l425Z ~<span style="color:#f92672">]</span><span style="color:#75715e"># mount /dev/vgdata/lvdata /disk1/</span>
+<span style="color:#f92672">[</span>root@iZ88qg9l425Z ~<span style="color:#f92672">]</span><span style="color:#75715e"># df -Th</span>
+Filesystem           Type   Size  Used Avail Use% Mounted on
+/dev/vda1            ext4    40G  3.6G   34G  10% /
+tmpfs                tmpfs  3.9G     <span style="color:#ae81ff">0</span>  3.9G   0% /dev/shm
+/dev/mapper/vgdata-lvdata
+                     ext4   4.0T  195M  3.8T   1% /disk1
+<span style="color:#f92672">[</span>root@iZ88qg9l425Z ~<span style="color:#f92672">]</span><span style="color:#75715e">#</span>
+</code></pre></div><h2 id="参考资料">参考资料</h2>
+<ul>
+<li>《<a href="https://linux.cn/article-3218-1.html">Linux LVM简明教程》</a>- Linux 中国 · 开源社区</li>
+<li>凌激冰 -《<a href="https://blog.51cto.com/dreamfire/1084729">Linux LVM逻辑卷配置过程详解（创建，增加，减少，删除，卸载）</a>》- 51CTO</li>
+<li><a href="https://www.zhihu.com/people/4k8k">字诀跳动</a> - 《<a href="https://zhuanlan.zhihu.com/p/296777898">一篇看懂！Linux磁盘的管理（分区、格式化、挂载），LVM逻辑卷，RAID磁盘阵列</a>》 - 知乎</li>
+</ul>
+
+
+  <footer>
+  
+<nav class="post-nav">
+  <span class="nav-prev"><a href="../../tech/install-latest-r-from-source/">Linux 下 R 源码安装指南</a><br/>&larr;</span>
+  <span class="nav-next"><a href="../../tech/how-to-install-perl-modules/">各个平台下 Perl 模块安装总结</a><br/>&rarr;</span>
+</nav>
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/tech\/install-latest-r-from-source\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/tech\/how-to-install-perl-modules\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script async src="https://blog.weiyan.cc/js/fix-toc.js"></script>
+<script async src="https://blog.weiyan.cc/js/center-img.js"></script>
+<script async src="https://blog.weiyan.cc/js/right-quote.js"></script>
+<script async src="https://blog.weiyan.cc/js/fix-footnote.js"></script>
+<script async src="https://blog.weiyan.cc/js/math-code.js"></script>
+<script async src="https://blog.weiyan.cc/js/external-link.js"></script>
+<script async src="https://blog.weiyan.cc/js/alt-title.js"></script>
+<script async src="https://blog.weiyan.cc/js/header-link.js"></script>
+<script async src="https://blog.weiyan.cc/js/dom-scripts.js"></script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.3.1/build/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+
+
+  
+
+  <div class="copyright">
+      <script type="text/javascript" src="//rf.revolvermaps.com/0/0/6.js?i=5m6pzaeh5ar&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=0&amp;bv=0" async="async"></script>
+
+  
+      <br/><br/><a href="https://www.yuque.com/shenweiyan"><img src="https://img.shields.io/badge/%E8%AF%AD%E9%9B%80-%E4%BA%91%E7%AB%AF%E7%9F%A5%E8%AF%86%E5%BA%93-blueviolet" alt="yuque"></a> <a href="https://www.bioitee.com"><img src="https://img.shields.io/badge/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7-BioIT%E7%88%B1%E5%A5%BD%E8%80%85-important" alt="wechat"></a> <a href="https://weibo.com/u/6020143196"><img src="https://img.shields.io/badge/%E5%BE%AE%E5%8D%9A-%E7%AB%A0%E9%B1%BC%E7%8C%AB%E5%85%88%E7%94%9F-blue" alt="weibo"></a> <a href="https://github.com/shenweiyan"><img src="https://img.shields.io/badge/GitHub-shenweiyan-green" alt="github"></a>
+  
+
+  
+       
+      <br/><br/>© Powered by <a href="https://github.com/shenweiyan/ICS-Hugo-Theme">ICS-Hugo-Theme</a> and  <a href="https://gohugo.io">Hugo</a> | <a href="https://www.bioitee.com/">Bio IT 爱好者</a> 2018 - 2023 | <a href="http://beian.miit.gov.cn/">粤ICP备16023717号</a><br/>
+  
+
+  </div>
+  
+
+  </footer>
+  </article>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  </body>
+</html>
+

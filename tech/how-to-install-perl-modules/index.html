@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+     
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css"> 
+    <link rel="stylesheet" href="../../fonts/academicons-1.8.6/css/academicons.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../img/logo.png"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baidu-site-verification" content="code-HxM5pCr1nD" />
+    
+    
+    
+    
+    
+    
+    <title>各个平台下 Perl 模块安装总结 - 沈维燕 | BioIT 爱好者</title> 
+    <meta property="og:title" content="各个平台下 Perl 模块安装总结 - 沈维燕 | BioIT 爱好者">
+    
+
+    
+      
+    
+
+    
+
+    
+  
+    <link rel="stylesheet" href="https://blog.weiyan.cc/css/style.css"/>
+    <link rel="stylesheet" href="https://blog.weiyan.cc/css/fonts.css"/>
+    
+
+<link rel="stylesheet" href="https://blog.weiyan.cc/css/template-styles.css" />
+<link rel="stylesheet" href="https://blog.weiyan.cc/css/custom.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.3.1/build/styles/github.min.css">
+
+
+  </head>
+
+  
+  <body class="tech">
+    
+    
+    <header class="intro-and-nav" role="banner">
+    <div>
+      <div class="intro">
+        <a class="logo" href="../../" aria-label="沈维燕 | BioIT 爱好者 home page">
+          <img src="https://blog.weiyan.cc/img/logo.png" alt="">
+        </a>
+        <p class="library-desc">
+          
+            Bio &amp; IT 爱好者
+          
+        </p>
+      </div>
+      <nav id="patterns-nav" class="patterns" role="navigation">
+        <h2 class="vh">Main navigation</h2>
+        <button id="menu-button" aria-expanded="false">
+          
+          目录
+        </button>
+        
+        <ul id="patterns-list">
+          
+          <li class="pattern">
+          
+          
+	  
+          
+          
+            <a href="../../" >
+              
+              首页
+            </a>
+          </li>
+          
+          <li class="pattern">
+          
+          
+	  
+          
+          
+            <a href="../../about/" >
+              
+              关于
+            </a>
+          </li>
+          
+          <li class="pattern">
+          
+          
+	  
+          
+          
+            <a href="../../tech/" >
+              
+              技术
+            </a>
+          </li>
+          
+          <li class="pattern">
+          
+          
+	  
+          
+          
+            <a href="../../note/" >
+              
+              随笔
+            </a>
+          </li>
+          
+          <li class="pattern">
+          
+          
+	  
+          
+          
+            <a href="../../portfolio/" >
+              
+              作品
+            </a>
+          </li>
+          
+          <li class="pattern">
+          
+          
+	  
+          
+          
+            <a href="../../archive/" >
+              
+              归档
+            </a>
+          </li>
+          
+          <li class="pattern">
+          
+          
+	  
+          
+          
+            <a href="../../feedback/" >
+              
+              留言
+            </a>
+          </li>
+          
+          <li class="pattern">
+          
+          
+	  
+          
+          
+            <a href="../../tags/" >
+              
+              标签
+            </a>
+          </li>
+          
+          <li class="pattern">
+          
+          
+	  
+          
+          
+            <a href="https://www.yuque.com/shenweiyan" >
+              
+              语雀
+            </a>
+          </li>
+          
+          
+
+<li class="pattern">&nbsp;&nbsp;</li>
+
+
+
+<li class="pattern"><a href="https://github.com/shenweiyan/WebSiteSRC/edit/main/content/tech/2020-06-19-how-to-install-perl-modules.md" target="_blank">编辑</a></li>
+
+
+<li class="pattern"><a href="../../tech/index.xml" type="application/rss+xml" title="RSS feed">订阅</a></li>
+
+<li class="pattern"><a href="../../license/" title="License">版权</a></li>
+
+
+        </ul>
+      </nav>
+    </div>
+    </header>
+
+    <article class="main">
+      <header class="title">
+        
+
+<h1>各个平台下 Perl 模块安装总结</h1>
+
+
+
+<h4>沈维燕 &middot 
+2020-06-19</h4> 
+
+
+   
+  
+
+
+      </header>
+
+
+  
+
+  <blockquote>
+<p>📢 本文章同步自作者的<a href="https://www.yuque.com/shenweiyan/">语雀知识库</a>，请点击<a href="https://www.yuque.com/shenweiyan/cookbook/how-to-install-perl-modules">这里</a>阅读原文。</p>
+</blockquote>
+<p>从 1994 年 10 月 17 日发布的 Perl 5.000 起，Perl 增加了模块的概念，用来提供面向对象编程的能力。这是 Perl 语言发展史上的一个里程碑。此后，广大自由软件爱好者开发了大量功能强大、构思精巧的 Perl 模块，极大地扩展了 Perl 语言的功能。</p>
+<p>CPAN，Comprehensive Perl Archive Network（<a href="https://www.cpan.org/">https://www.cpan.org/</a>) 是 Perl 模块最大的集散地，包含了现今公布的几乎所有的 perl 模块。CPAN 从 1995 年 10 月 26 日开始创建，截止 2019 年 4 月该网站已经囊括了超过 13,750 位作者编写的 180,202 个 Perl 模块，其镜像分布在全球在 257 台服务器上。</p>
+<p>Perl 作为生物信息数据预处理、文本处理和格式转换中的一把瑞士军刀，其强大和重要性不言而喻。今天，我们在这里主要介绍一下各种平台下 perl 模块的安装方法。以安装 Bio::SeqIO 模块为例。</p>
+<h1 id="一linux-下安装-perl-模块">一、Linux 下安装 Perl 模块</h1>
+<p>Linux/Unix下安装Perl模块有两种方法：手工安装和自动安装。 第一种方法是从 CPAN 上下载您需要的模块，手工编译、安装。第二种方法是使用 CPAN 模块自动完成下载、编译、安装的全过程。</p>
+<h2 id="11-手工安装">1.1 手工安装</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># 从 CPAN(https://metacpan.org/)下载了 BioPerl 模块 1.7.5 版的压缩文件 BioPerl-1.7.5.tar.gz</span>
+<span style="color:#75715e"># 假设放在/usr/local/src/下。</span>
+$ cd /usr/local/src
+
+<span style="color:#75715e"># 解压缩这个文件,这时会新建一个 BioPerl-1.7.5 的目录。</span>
+$ tar xvzf BioPerl-1.7.5.tar.gz
+
+<span style="color:#75715e"># 换到解压后的目录</span>
+$ cd BioPerl-1.7.5
+
+<span style="color:#75715e"># 生成 makefile，如果要指定模块的安装路径，需要添加 PREFIX=/path/to/install 路径</span>
+$ perl Makefile.PL <span style="color:#f92672">(</span>PREFIX<span style="color:#f92672">=</span>/home/shenweiyan/perl_modules<span style="color:#f92672">)</span>
+
+<span style="color:#75715e"># 生成模块</span>
+$ make
+
+<span style="color:#75715e"># 测试模块(这步可有可无)：</span>
+$ make test
+
+<span style="color:#75715e"># 如果测试结果报告&#34;all test ok&#34;，您就可以放心地安装编译好的模块了。</span>
+<span style="color:#75715e"># 安装模块前，先要确保您对 perl5 安装目录有可写权限(通常以 su 命令获得)，执行：</span>
+$ make install
+
+<span style="color:#75715e"># 现在，试试 Bio::SeqIO 模块吧。如果下面的命令没有给出任何输出，那就没问题。</span>
+$ perl -MBio::SeqIO -e1
+
+<span style="color:#75715e"># 如果指定 PREFIX 安装路径，模块安装完成后，需要把模块安装的新路径添加到 PERL5LIB 环境变量</span>
+$ export PERL5LIB<span style="color:#f92672">=</span>$PERL5LIB:/home/shenweiyan/perl_modules/lib/site_perl  //或者把该行内容添加到 ~/.bashrc
+</code></pre></div><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://cos.shenlab.cn/yuque/0/2019/png/126032/1554191904292-56577912-b1f0-4cb6-bb6d-5ed86b913fd0.png">
+<img src="https://cos.shenlab.cn/yuque/0/2019/png/126032/1554191904292-56577912-b1f0-4cb6-bb6d-5ed86b913fd0.png" alt="bioperl-install.png"  />
+</a>
+</div>
+
+</p>
+<p>上述步骤适合于 Linux/Unix 下绝大多数的 Perl 模块。可能还有少数模块的安装方法略有差别，所以最好先看看安装目录里的 README 或 INSTALL。</p>
+<p>有的时候如果是 Build.PL 的需要以下安装步骤：（需要 Module::Build 模块支持）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ perl Build.PL
+$ ./Build
+$ ./Build test
+$ ./Build install
+</code></pre></div><h2 id="12-自动安装">1.2 自动安装</h2>
+<p>Linux/Unix 下自动安装 Perl 模块主要有两种方法，一是利用 <code>perl -MCPAN -e 'install 模块'</code> 安装；二是直接使用 <code>cpan</code> 的命令执行安装。这两种方法都是通过与 CPAN 进行交互，然后执行对应模块的自动安装，本质上都是一样的。</p>
+<h3 id="121-使用-cpan-模块">1.2.1 使用 CPAN 模块</h3>
+<h4 id="自动安装方法一">自动安装方法一</h4>
+<ul>
+<li>执行 <code>perl -MCPAN -e shell</code> 命令，或者直接运行 <code>cpan</code> 命令，都可以进入 cpan 交互模式。</li>
+</ul>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://cos.shenlab.cn/yuque/0/2020/png/126032/1596591343292-175cddb6-31db-4644-9490-40819a0f9424.png">
+<img src="https://cos.shenlab.cn/yuque/0/2020/png/126032/1596591343292-175cddb6-31db-4644-9490-40819a0f9424.png" alt="cpan-linux.png"  />
+</a>
+</div>
+
+</p>
+<ul>
+<li>安装前需要先联上网，有无 root 权限均可。对于非 root 用户，Perl 提供了 &lsquo;<strong>local::lib</strong>'、'<strong>sudo</strong>&rsquo; or &lsquo;<strong>manual</strong>&rsquo; 三种使用 CPAN 模块自动安装的方式，初次运行 CPAN 时需要用户自行进行选择设置，默认为  <strong>&lsquo;local::lib</strong>'。</li>
+<li>初次运行 CPAN 时需要做一些设置，如果我们的机器是直接与因特网相联，那么一路回车就行了。</li>
+</ul>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://cos.shenlab.cn/yuque/0/2020/jpeg/126032/1596593147549-1afc2f43-b47d-46ca-8679-03f9d7a53742.jpeg">
+<img src="https://cos.shenlab.cn/yuque/0/2020/jpeg/126032/1596593147549-1afc2f43-b47d-46ca-8679-03f9d7a53742.jpeg" alt="cpan-setting.jpg"  />
+</a>
+</div>
+
+</p>
+<ul>
+<li>常用 cpan 命令：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># 获得帮助</span>
+cpan&gt; help
+
+<span style="color:#75715e"># 列出 CPAN 上所有模块的列表</span>
+cpan&gt;m
+
+<span style="color:#75715e"># 安装模块，自动完成 Bio::SeqIO 模块从下载到安装的全过程。</span>
+cpan&gt; install Bio::SeqIO
+
+<span style="color:#75715e"># 查看当前 CPAN 使用的镜像站点</span>
+cpan<span style="color:#f92672">[</span>3<span style="color:#f92672">]</span>&gt; o conf urllist
+
+<span style="color:#75715e"># 查看当前 CPAN 的配置信息</span>
+cpan<span style="color:#f92672">[</span>2<span style="color:#f92672">]</span>&gt; o conf
+
+<span style="color:#75715e"># 退出</span>
+cpan&gt; quit
+</code></pre></div><ul>
+<li>切换 cpan 的自动安装模式，从 <strong>local::lib</strong> 切换成 <strong>sudo</strong>（参考：<a href="https://stackoverflow.com/questions/9409888/when-using-cpan-in-linux-ubuntu-should-i-run-it-using-sudo-as-root-or-as-my-de/9410122#9410122">这里</a>）</li>
+</ul>
+<blockquote>
+<p>如果你使用 <strong>su root</strong> 的方式切换到 root，然后执行 <strong>cpan</strong> 进入界面执行模块，对应的模块会依然默认使用 <strong>local::lib</strong> 的方式安装到 su root 切换前所对应用户的 ~/perl5/lib/perl5 目录下。</p>
+<p>针对这种情况，你就需要使用 <strong>su - root</strong> 的方式切换到 root，这样 <strong>cpan</strong> 进入界面执行模块安装才会自动切换到 sudo 模式，把模块自动安装到默认 Perl 对应的 lib 目录。</p>
+</blockquote>
+<blockquote>
+<p>You should run the cpan command as your normal user. You have two choices:</p>
+<ol>
+<li>Install modules into a directory under your home dir. <a href="https://metacpan.org/pod/local::lib">local::lib</a> will help you set that up.</li>
+<li>Configure cpan to use sudo during the install phase. You do that by starting the cpan shell and typing:</li>
+</ol>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">o conf make_install_make_command <span style="color:#e6db74">&#39;sudo make&#39;</span>
+o conf mbuild_install_build_command <span style="color:#e6db74">&#39;sudo ./Build&#39;</span>
+o conf commit
+</code></pre></div><blockquote>
+<p>The first line configures <a href="https://metacpan.org/pod/ExtUtils::MakeMaker">MakeMaker</a> to use sudo. The second line does the same for <a href="https://metacpan.org/pod/Module::Build">Module::Build</a>. The third line saves the changes.</p>
+</blockquote>
+<h4 id="自动安装方法二">自动安装方法二</h4>
+<p>可以使用命令行的方式执行安装。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cpan -i 模块名
+
+例如：cpan -i CGI
+</code></pre></div><h3 id="123-修改-cpan-mirror-的默认源">1.2.3 修改 CPAN mirror 的默认源</h3>
+<p>安装 perl 下的很多模块文件时，比较快捷的方法是使用 cpan 工具。默认 cpan shell 使用的是 cpan.org 的源，在国内使用的话速度会非常的慢。如果更换为国内的如阿里或网易等公司的源的话，速度会明显提高。修改方法如下：</p>
+<ul>
+<li>执行 <code>cpan</code> 命令，或者通过 <code>perl -MCPAN -e shell</code> 命令进入 CPAN 交互模式查看当前源配置。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-perl" data-lang="perl">cpan[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">&gt;</span> o conf
+$CPAN::Config options from <span style="color:#e6db74">/root/</span><span style="color:#f92672">.</span>cpan<span style="color:#e6db74">/CPAN/</span>MyConfig<span style="color:#f92672">.</span>pm:
+    commit             [Commit changes to disk]
+    defaults           [Reload defaults from disk]
+    help               [Short help about <span style="color:#e6db74">&#39;o conf&#39;</span> usage]
+    init               [Interactive setting of all options]
+
+    applypatch         <span style="color:#f92672">[]</span>
+    auto_commit        [<span style="color:#ae81ff">0</span>]
+    build_cache        [<span style="color:#ae81ff">100</span>]
+    build_dir          [<span style="color:#e6db74">/root/</span><span style="color:#f92672">.</span>cpan<span style="color:#f92672">/</span>build]
+    build_dir_reuse    [<span style="color:#ae81ff">0</span>]
+    <span style="color:#f92672">......</span>
+cpan[<span style="color:#ae81ff">2</span>]<span style="color:#f92672">&gt;</span> o conf urllist
+    urllist
+        <span style="color:#ae81ff">0</span> [http:<span style="color:#e6db74">//</span>www<span style="color:#f92672">.</span>cpan<span style="color:#f92672">.</span>org<span style="color:#f92672">/</span>]
+Type <span style="color:#e6db74">&#39;o conf&#39;</span> to view all configuration items
+</code></pre></div><ul>
+<li>增加源或移出源并提交</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cpan<span style="color:#f92672">[</span>2<span style="color:#f92672">]</span>&gt; o conf urllist
+    urllist
+        <span style="color:#ae81ff">0</span> <span style="color:#f92672">[</span>http://www.cpan.org/<span style="color:#f92672">]</span>
+Type <span style="color:#e6db74">&#39;o conf&#39;</span> to view all configuration items
+
+
+cpan<span style="color:#f92672">[</span>3<span style="color:#f92672">]</span>&gt; o conf urllist push https:////mirrors.aliyun.com/CPAN/
+Please use <span style="color:#e6db74">&#39;o conf commit&#39;</span> to make the config permanent!
+
+
+cpan<span style="color:#f92672">[</span>4<span style="color:#f92672">]</span>&gt; o conf commit
+commit: wrote <span style="color:#e6db74">&#39;/root/.cpan/CPAN/MyConfig.pm&#39;</span>
+
+cpan<span style="color:#f92672">[</span>5<span style="color:#f92672">]</span>&gt; o conf urllist
+    urllist
+        <span style="color:#ae81ff">0</span> <span style="color:#f92672">[</span>http://www.cpan.org/<span style="color:#f92672">]</span>
+        <span style="color:#ae81ff">1</span> <span style="color:#f92672">[</span>https://mirrors.aliyun.com/CPAN/<span style="color:#f92672">]</span>
+Type <span style="color:#e6db74">&#39;o conf&#39;</span> to view all configuration items
+</code></pre></div><p>移出一个源或者多个源可以使用 <code>pop</code> 函数，如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cpan<span style="color:#f92672">[</span>6<span style="color:#f92672">]</span>&gt; o conf urllist pop https://mirrors.aliyun.com/CPAN/
+
+cpan<span style="color:#f92672">[</span>3<span style="color:#f92672">]</span>&gt; o conf urllist pop http://www.cpan.org/ https://mirrors.aliyun.com/CPAN/
+</code></pre></div><p>也可以一次增加多个源：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cpan<span style="color:#f92672">[</span>4<span style="color:#f92672">]</span>&gt; o conf urllist ftp://mirrors.sohu.com/CPAN/ http://mirrors.163.com/cpan/
+</code></pre></div><ul>
+<li>或者直接修改 <code>~/.cpan/CPAN/MyConfig.pm</code> 文件的 <strong>urllist</strong>：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ grep urllist /home/steven/.cpan/CPAN/MyConfig.pm
+  <span style="color:#e6db74">&#39;urllist&#39;</span> <span style="color:#f92672">=</span>&gt; <span style="color:#f92672">[</span>q<span style="color:#f92672">[</span>http://www.cpan.org/<span style="color:#f92672">]</span>, q<span style="color:#f92672">[</span>http://mirrors.aliyun.com/CPAN/<span style="color:#f92672">]]</span>,
+
+$ cpan
+Loading internal logger. Log::Log4perl recommended <span style="color:#66d9ef">for</span> better logging
+Terminal does not support AddHistory.
+
+To fix that, maybe try&gt;  install Term::ReadLine::Perl
+
+
+cpan shell -- CPAN exploration and modules installation <span style="color:#f92672">(</span>v2.26<span style="color:#f92672">)</span>
+Enter <span style="color:#e6db74">&#39;h&#39;</span> <span style="color:#66d9ef">for</span> help.
+
+cpan<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span>&gt; o conf urllist
+    urllist
+        <span style="color:#ae81ff">0</span> <span style="color:#f92672">[</span>http://www.cpan.org/<span style="color:#f92672">]</span>
+        <span style="color:#ae81ff">1</span> <span style="color:#f92672">[</span>http://mirrors.aliyun.com/CPAN/<span style="color:#f92672">]</span>
+Type <span style="color:#e6db74">&#39;o conf&#39;</span> to view all configuration items
+</code></pre></div><p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="https://cos.shenlab.cn/yuque/0/2019/png/126032/1554197701341-40d10dbe-50b2-4d6a-b827-394e56594166.png">
+<img src="https://cos.shenlab.cn/yuque/0/2019/png/126032/1554197701341-40d10dbe-50b2-4d6a-b827-394e56594166.png" alt="2.png"  />
+</a>
+</div>
+
+</p>
+<ul>
+<li>如果对当前的当前所有的 cpan shell 的配置不满意，也可以通过命令重新初始化该文件，如下：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cpan&gt; o conf init
+</code></pre></div><h3 id="124使用cpanm-命令安装">1.2.4 使用 cpanm 命令安装</h3>
+<p>除了 <code>**cpan**</code> 以外，Perl 的模块安装还可以通过 <code>**cpanm**</code> 命令进行安装，而要获取 <code>**cpanm**</code> 命令我们需要先安装 Perl 的 <a href="https://metacpan.org/pod/distribution/App-cpanminus/lib/App/cpanminus/fatscript.pm"><strong>App::cpanminus</strong></a> 模块：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>root@ecs-steven data<span style="color:#f92672">]</span><span style="color:#75715e"># cpan</span>
+Loading internal logger. Log::Log4perl recommended <span style="color:#66d9ef">for</span> better logging
+Terminal does not support AddHistory.
+
+To fix that, maybe try&gt;  install Term::ReadLine::Perl
+
+
+cpan shell -- CPAN exploration and modules installation <span style="color:#f92672">(</span>v2.26<span style="color:#f92672">)</span>
+Enter <span style="color:#e6db74">&#39;h&#39;</span> <span style="color:#66d9ef">for</span> help.
+
+cpan<span style="color:#f92672">[</span>14<span style="color:#f92672">]</span>&gt; install App::cpanminus
+Running install <span style="color:#66d9ef">for</span> module <span style="color:#e6db74">&#39;App::cpanminus&#39;</span>
+Fetching with HTTP::Tiny:
+http://www.cpan.org/authors/id/M/MI/MIYAGAWA/App-cpanminus-1.7044.tar.gz
+
+  CPAN: checksum security checks disabled because Digest::SHA not installed.
+  Please consider installing the Digest::SHA module.
+
+Scanning cache /root/.cpan/build <span style="color:#66d9ef">for</span> sizes
+
+......
+
+</code></pre></div><p><a href="https://metacpan.org/pod/distribution/App-cpanminus/lib/App/cpanminus/fatscript.pm"><strong>App::cpanminus</strong></a> 模块安装完成后， <code>cpanm</code> 命令就会自动安装到对应 Perl 所在的目录（如果用的是 <code>/bin/perl</code> ， <code>cpanm</code> 将默认安装到 <code>/usr/local/bin/cpanm</code> ）。</p>
+<p>使用 <code>cpanm</code> 安装 Perl 模块，命令后直接接模块名称即可，如：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo cpanm CGI::Session
+$ sudo cpanm Template
+</code></pre></div><p>注: 如果不是 root 权限，cpanm 也一样能用。它会将模块下载安装到用户的根目录(~)下。</p>
+<p>为了加快 cpanm 下载速度, 可以指定使用镜像. 并只从镜像下载. 如下:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> $ sudo cpanm --mirror http://mirrors.163.com/cpan --mirror-only CGI::Session
+</code></pre></div><h1 id="二windows-下-perl-模块安装">二、windows 下 Perl 模块安装</h1>
+<p>在开始介绍 windows 下 Perl 模块安装前，我们先来了解一些关于 make、gmake、nmake、dmake 等编译工具。</p>
+<p>Make 是一种自动化构建工具，用于从源码自动生成可执行程序和库（通常借助于 makefile 来推导出目标程序）；Make 有多个版本，如 Unix/Linux下 的 GNU Make（之所以有 gmake，是因为在别的平台上 make 一般被占用，GNU make 只好叫 gmake 了）、Windows 下的 Microsoft nmake 等。dmake 则是一个适用于 Linux、Solaris、Win32 以及其他平台的跨平台的命令行编译工具，除此之外，跨平台编译工具中还有一个大名鼎鼎的 cmake。</p>
+<p>关于 Make 的详细介绍，具体可参考：<a href="http://en.wikipedia.org/wiki/Make_%28software%29">Wikipedia: Make (Software)</a>。</p>
+<p>dmake 工具：<a href="https://metacpan.org/release/dmake">https://metacpan.org/release/dmake</a>，具体安装方法请自行谷歌（dmake 貌似是 cpan 环境配置好就有了在 &ldquo;C:\Perl\site\bin&rdquo; 下）。</p>
+<p>nmake 是 Microsoft Visual Studio 中的附带命令，需要安装 VS；安装 VS 后，nmake.exe 出现在 <code>C:\Program Files (x86)\Microsoft Visual Studio 9\VC\bin</code>  目录下（bin 文件夹的位置根据每个人系统不同，找到自己的安装位置，bin 文件夹中包含 nmake 即可）。如果 VS 安装过程中，没有注册 VS 的环境变量，因此直接在 cmd 的 DOC 中输入 nmake 就会出现：&quot;&lsquo;nmake&rsquo; 不是内部或者外部命令，也不是可运行的程序或批处理文件&quot; 报错。</p>
+<p>使用 nmake 的方法有两种：</p>
+<ol>
+<li>打开 VS 自带的命令行 &ldquo;<code>Visual Studio 2008 Command Prompt</code>&quot;，然后在该命令行中使用 nmake；</li>
+<li>将路径 &ldquo;<code>C:\Program Files (x86)\Microsoft Visual Studio 9\VC\bin</code>&rdquo; 设置到环境变量中去，然后在 DOS 命令行中使用 nmake。</li>
+</ol>
+<h2 id="21-解压编译手动安装">2.1 解压编译手动安装</h2>
+<p>windows 下手动 Perl 模块方法跟 Linux类似。都需要解压后执行：</p>
+<pre tabindex="0"><code>perl makefile.pl 
+nmake/dmake 
+nmake/dmake test
+nmake/dmake install
+</code></pre><h2 id="22-cpan-自动安装">2.2 cpan 自动安装</h2>
+<p>安装前需要对 cpan 配置，cpan需要安装其他的模块 <a href="https://metacpan.org/release/dmake">dmake</a> 和 <a href="http://www.mingw.org/">MinGw gcc compiler</a>。完成后，进入 cpan 交互界面安装（参考上面的 linux cpan 自动安装）。</p>
+<h2 id="23-ppm-自动安装">2.3 PPM 自动安装</h2>
+<p>如果使用 ActivePerl，可以使用 PPM（Perl Package Manager） 来安装，使用 PPM GUI 或 PPM Commandline。PPM commandline 实例如下：</p>
+<ol>
+<li>add correct repositories.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">c:\perl\bin\ppm repo add http<span style="color:#960050;background-color:#1e0010">:</span>//theoryx5.uwinnipeg.ca/ppms/package.lst
+c:\perl\bin\ppm repo add http<span style="color:#960050;background-color:#1e0010">:</span>//www.roth.net/perl/packages/
+</code></pre></div><p>通过设置不同的 repositories 可以加速部分 Perl 模块的下载，我们也可以通过 ppm 命令查看可用的 repositories list：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell"><span style="color:#75715e"># Use the command ppm repo list to list all installed PPM repositories in ActivePerl 5.10 through 5.14.</span>
+PS C:\&gt; ppm repo list
+<span style="color:#960050;background-color:#1e0010">┌────┬───────┬────────────────────────────────┐</span>
+<span style="color:#960050;background-color:#1e0010">│</span> id <span style="color:#960050;background-color:#1e0010">│</span> pkgs  <span style="color:#960050;background-color:#1e0010">│</span> name                           <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">├────┼───────┼────────────────────────────────┤</span>
+<span style="color:#960050;background-color:#1e0010">│</span>  1 <span style="color:#960050;background-color:#1e0010">│</span> 13334 <span style="color:#960050;background-color:#1e0010">│</span> ActiveState Package Repository <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">│</span>  2 <span style="color:#960050;background-color:#1e0010">│</span>   294 <span style="color:#960050;background-color:#1e0010">│</span> Theoryx                        <span style="color:#960050;background-color:#1e0010">│</span>
+<span style="color:#960050;background-color:#1e0010">└────┴───────┴────────────────────────────────┘</span>
+ (2 enabled repositories)
+PS C:\&gt;
+
+<span style="color:#75715e"># The command ppm repo desc #, where &#34;#&#34; is the number of the repository (in the order it was added), will display information about that repository:</span>
+PS C:\&gt; ppm repo desc 2
+Id<span style="color:#960050;background-color:#1e0010">:</span> 2
+Name<span style="color:#960050;background-color:#1e0010">:</span> Theoryx
+URL<span style="color:#960050;background-color:#1e0010">:</span> http<span style="color:#960050;background-color:#1e0010">:</span>//cpan.uwinnipeg.ca/PPMPackages/14xx/
+Enabled<span style="color:#960050;background-color:#1e0010">:</span> yes
+Last-Status<span style="color:#960050;background-color:#1e0010">:</span> 200 OK
+Last-Access<span style="color:#960050;background-color:#1e0010">:</span> 9 seconds ago
+Refresh-In<span style="color:#960050;background-color:#1e0010">:</span> 1 day
+</code></pre></div><ol start="2">
+<li>install the packages</li>
+</ol>
+<pre tabindex="0"><code>c:\perl\bin\ppm install Carp-Assert
+
+c:\perl\bin\ppm install Log-Log4perl
+
+c:\perl\bin\ppm install YAML-Syck
+</code></pre><p>更多关于 ActivePerl 的文档与资料，可以参考：<a href="http://docs.activestate.com/">http://docs.activestate.com/</a>。</p>
+<h1 id="三其他异常处理">三、其他异常处理</h1>
+<h2 id="31-not-contain-a-line-count-heade">3.1 not contain a Line-Count heade</h2>
+<p>使用 cpan 安装 PERL 模块的时候，遇到下面的问题导致无法安装 Perl 模块，具体错误信息如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-perl" data-lang="perl">cpan<span style="color:#f92672">&gt;</span> install Getopt::Long
+<span style="color:#f92672">.........</span>
+<span style="color:#f92672">...........</span>
+Going to read <span style="color:#e6db74">/root/</span><span style="color:#f92672">.</span>cpan<span style="color:#e6db74">/sources/mo</span>dules<span style="color:#f92672">/</span><span style="color:#ae81ff">02</span>packages<span style="color:#f92672">.</span>details<span style="color:#f92672">.</span>txt<span style="color:#f92672">.</span>gz
+Warning: Your <span style="color:#e6db74">/root/</span><span style="color:#f92672">.</span>cpan<span style="color:#e6db74">/sources/mo</span>dules<span style="color:#f92672">/</span><span style="color:#ae81ff">02</span>packages<span style="color:#f92672">.</span>details<span style="color:#f92672">.</span>txt<span style="color:#f92672">.</span>gz does <span style="color:#f92672">not</span> contain a Line<span style="color:#f92672">-</span>Count header<span style="color:#f92672">.</span>
+Please check the validity of the index file by comparing it to more
+than one CPAN mirror<span style="color:#f92672">.</span> I<span style="color:#960050;background-color:#1e0010">&#39;</span>ll <span style="color:#66d9ef">continue</span> but problems seem likely to
+happen<span style="color:#f92672">.</span>
+Warning: Your <span style="color:#e6db74">/root/</span><span style="color:#f92672">.</span>cpan<span style="color:#e6db74">/sources/mo</span>dules<span style="color:#f92672">/</span><span style="color:#ae81ff">02</span>packages<span style="color:#f92672">.</span>details<span style="color:#f92672">.</span>txt<span style="color:#f92672">.</span>gz does <span style="color:#f92672">not</span> contain a Last<span style="color:#f92672">-</span>Updated header<span style="color:#f92672">.</span>
+</code></pre></div><p>原因是由于 <code>cpan</code> 模块中的数据损坏造成。解决方法如下：</p>
+<ol>
+<li>删除用户主目录下面的 cpan 目录：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">rm -rf ~/.cpan
+</code></pre></div><ol start="2">
+<li>执行 <code>perl -MCPAN -e shell</code> 命令，输入：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cpan<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span>&gt; reload index
+</code></pre></div><ol start="3">
+<li>安装此模块：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cpan<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span>&gt; install Bundle::CPAN
+</code></pre></div><ol start="4">
+<li>最后执行</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cpan<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span>&gt; reload CPAN
+</code></pre></div><p>这样即可正常通过命令行 install MODULES 模块的正常安装了。</p>
+<h1 id="四参考资料">四、参考资料</h1>
+<ul>
+<li>itybku，《<a href="http://www.361way.com/change-cpan-default-mirror/5094.html">修改 CPAN mirror 的默认源</a>》，运维之路的博客</li>
+<li>生信菜鸟团，《<a href="http://www.bio-info-trainee.com/2451.html">perl 模块安装大全</a>》，WordPress 博客</li>
+<li>xianguang，《<a href="https://www.cnblogs.com/xianguang/p/9845375.html">Perl 模块安装</a>》，博客园</li>
+<li>luckcy，《<a href="https://blog.51cto.com/lxsym/484820">解决 perl 模块无法安装的问题</a>》，51CTO博客</li>
+</ul>
+
+
+  <footer>
+  
+<nav class="post-nav">
+  <span class="nav-prev"><a href="../../tech/linux-lvm/">Linux 磁盘管理之 LVM 原理与操作</a><br/>&larr;</span>
+  <span class="nav-next"><a href="../../tech/ncbi-blast-configure/">NCBI Blast 源码编译安装方法</a><br/>&rarr;</span>
+</nav>
+<script type="text/javascript">
+document.addEventListener('keyup', function(e) {
+  if (e.target.nodeName.toUpperCase() != 'BODY') return;
+  var url = false;
+  if (e.which == 37) {  
+    
+    url = '\/tech\/linux-lvm\/';
+    
+  } else if (e.which == 39) {  
+    
+    url = '\/tech\/ncbi-blast-configure\/';
+    
+  }
+  if (url) window.location = url;
+});
+</script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script async src="https://blog.weiyan.cc/js/fix-toc.js"></script>
+<script async src="https://blog.weiyan.cc/js/center-img.js"></script>
+<script async src="https://blog.weiyan.cc/js/right-quote.js"></script>
+<script async src="https://blog.weiyan.cc/js/fix-footnote.js"></script>
+<script async src="https://blog.weiyan.cc/js/math-code.js"></script>
+<script async src="https://blog.weiyan.cc/js/external-link.js"></script>
+<script async src="https://blog.weiyan.cc/js/alt-title.js"></script>
+<script async src="https://blog.weiyan.cc/js/header-link.js"></script>
+<script async src="https://blog.weiyan.cc/js/dom-scripts.js"></script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.3.1/build/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+
+
+  
+
+  <div class="copyright">
+      <script type="text/javascript" src="//rf.revolvermaps.com/0/0/6.js?i=5m6pzaeh5ar&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=0&amp;bv=0" async="async"></script>
+
+  
+      <br/><br/><a href="https://www.yuque.com/shenweiyan"><img src="https://img.shields.io/badge/%E8%AF%AD%E9%9B%80-%E4%BA%91%E7%AB%AF%E7%9F%A5%E8%AF%86%E5%BA%93-blueviolet" alt="yuque"></a> <a href="https://www.bioitee.com"><img src="https://img.shields.io/badge/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7-BioIT%E7%88%B1%E5%A5%BD%E8%80%85-important" alt="wechat"></a> <a href="https://weibo.com/u/6020143196"><img src="https://img.shields.io/badge/%E5%BE%AE%E5%8D%9A-%E7%AB%A0%E9%B1%BC%E7%8C%AB%E5%85%88%E7%94%9F-blue" alt="weibo"></a> <a href="https://github.com/shenweiyan"><img src="https://img.shields.io/badge/GitHub-shenweiyan-green" alt="github"></a>
+  
+
+  
+       
+      <br/><br/>© Powered by <a href="https://github.com/shenweiyan/ICS-Hugo-Theme">ICS-Hugo-Theme</a> and  <a href="https://gohugo.io">Hugo</a> | <a href="https://www.bioitee.com/">Bio IT 爱好者</a> 2018 - 2023 | <a href="http://beian.miit.gov.cn/">粤ICP备16023717号</a><br/>
+  
+
+  </div>
+  
+
+  </footer>
+  </article>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  </body>
+</html>
+

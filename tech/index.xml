@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>技术博文 on 沈维燕 | BioIT 爱好者</title>
+    <link>https://blog.weiyan.cc/tech/</link>
+    <description>Recent content in 技术博文 on 沈维燕 | BioIT 爱好者</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 30 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.weiyan.cc/tech/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>折腾了一天，终于把这个 R 包装上了</title>
+      <link>https://blog.weiyan.cc/tech/r-sf/</link>
+      <pubDate>Wed, 14 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.weiyan.cc/tech/r-sf/</guid>
+      <description>📢 本文章同步自作者的语雀知识库，请点击这里阅读原文。 事情起因于在推特看到关于ggVennDiagram这个 R 包教程的一条推文，想着去复现一下</description>
+    </item>
+    
+    <item>
+      <title>Singularity 初探之安装部署与避坑</title>
+      <link>https://blog.weiyan.cc/tech/try-singularity/</link>
+      <pubDate>Tue, 18 Apr 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.weiyan.cc/tech/try-singularity/</guid>
+      <description>📢本 文章同步自作者的语雀知识库，请点击这里阅读原文。 背景 怎么样高效的搭建分析流程且能保证分析流程稳定运行的使用效果呢？目前主流的是 conda 和容器技</description>
+    </item>
+    
+    <item>
+      <title>基于语雀 API 的文档管理探索</title>
+      <link>https://blog.weiyan.cc/tech/try-yuque-api/</link>
+      <pubDate>Fri, 02 Dec 2022 15:23:26 +0000</pubDate>
+      
+      <guid>https://blog.weiyan.cc/tech/try-yuque-api/</guid>
+      <description>编者：本文章同步自作者的语雀知识库，请点击这里阅读原文。 一直以来都有不少人在纠结语雀文档的批量导出，殊不知语雀本身提供了相当丰富的 API —— 这些</description>
+    </item>
+    
+    <item>
+      <title>NCBI Blast 源码编译安装方法</title>
+      <link>https://blog.weiyan.cc/tech/ncbi-blast-configure/</link>
+      <pubDate>Fri, 02 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.weiyan.cc/tech/ncbi-blast-configure/</guid>
+      <description>编者：本文章同步自做作者语雀知识库，请点击这里阅读原文。 CentOS 6.5 的老服务器没法直接使用官方提供的二进制版本，其中最要命的提示就是 Glibc 的版本太低，且</description>
+    </item>
+    
+    <item>
+      <title>各个平台下 Perl 模块安装总结</title>
+      <link>https://blog.weiyan.cc/tech/how-to-install-perl-modules/</link>
+      <pubDate>Fri, 19 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.weiyan.cc/tech/how-to-install-perl-modules/</guid>
+      <description>📢 本文章同步自作者的语雀知识库，请点击这里阅读原文。 从 1994 年 10 月 17 日发布的 Perl 5.000 起，Perl 增加了模块的概念，用来提供面向对象编程的能力。这是 Perl</description>
+    </item>
+    
+    <item>
+      <title>Linux 磁盘管理之 LVM 原理与操作</title>
+      <link>https://blog.weiyan.cc/tech/linux-lvm/</link>
+      <pubDate>Fri, 19 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.weiyan.cc/tech/linux-lvm/</guid>
+      <description>📢 本文章同步自作者的语雀知识库，请点击这里阅读原文。 LVM （ Logical V olume Manager, 逻辑卷管理器） 是 Linux 环境下对硬盘分区进行管理的一种机制，开创这项技术的初衷是为</description>
+    </item>
+    
+    <item>
+      <title>Linux 下 R 源码安装指南</title>
+      <link>https://blog.weiyan.cc/tech/install-latest-r-from-source/</link>
+      <pubDate>Mon, 01 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.weiyan.cc/tech/install-latest-r-from-source/</guid>
+      <description>📢 本文章同步自作者的语雀知识库，请点击这里阅读原文。 如果你使用的 Linux 系统 GCC 版本太低, 又没有 root 权限 (即使有 root 权限又担心升级 GCC 带来的风险) ; 同时你</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on 沈维燕 | BioIT 爱好者</title>
+    <link>https://blog.weiyan.cc/tags/python/</link>
+    <description>Recent content in Python on 沈维燕 | BioIT 爱好者</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 02 Dec 2022 15:23:26 +0000</lastBuildDate><atom:link href="https://blog.weiyan.cc/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>基于语雀 API 的文档管理探索</title>
+      <link>https://blog.weiyan.cc/tech/try-yuque-api/</link>
+      <pubDate>Fri, 02 Dec 2022 15:23:26 +0000</pubDate>
+      
+      <guid>https://blog.weiyan.cc/tech/try-yuque-api/</guid>
+      <description>编者：本文章同步自作者的语雀知识库，请点击这里阅读原文。 一直以来都有不少人在纠结语雀文档的批量导出，殊不知语雀本身提供了相当丰富的 API —— 这些</description>
+    </item>
+    
+  </channel>
+</rss>

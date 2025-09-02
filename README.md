@@ -25,3 +25,6 @@ $ git pull https://github.com/shenweiyan/ICS-Hugo-Theme.git
 - GitHub: [shenweiyan/WebSite](https://github.com/shenweiyan/WebSite) (main)：
   - 启用 GitHub Pages，绑定以下域名：[https://shen.bioitee.com/](https://shen.bioitee.com/)
   - 启用 CloudFlare Pages，绑定自定义域名：[https://blog.weiyan.cc/](https://blog.weiyan.cc/)
+
+
+<!-- Security scan triggered at 2025-09-02 14:25:02 -->
